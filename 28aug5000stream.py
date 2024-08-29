@@ -16,14 +16,14 @@ from bokeh.layouts import gridplot
 from backtesting import Backtest, Strategy
 from backtesting.lib import crossover
 
-st.title(" Backtest (QQQ) Release V.21 " )
+st.title(" Backtest (QQQ) Release V.22 " )
 
 
     
 cashval = st.number_input("Initial Capital", min_value=1000, value=10000, step=1000)
 thresholdval = st.number_input(" Select Threshold Value:", min_value=1, max_value=4, value=1, step=1)
-slval = st.number_input("Stop Loss above Current Price", min_value=1, value=4, step=1)
-tpval = st.number_input("Take Profit above Current Price", min_value=1, value=4, step=1)
+slval = float(st.number_input("Stop Loss above/below Current Price", min_value=1.0, value=4.0, step=0.1))
+tpval = float(st.number_input("Take Profit above/below Current Price", min_value=1.0, value=4.0, step=0.1))
 
     
 
