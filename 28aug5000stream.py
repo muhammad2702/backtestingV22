@@ -627,8 +627,8 @@ if st.button("Run Backtest"):
             exit_bars = trades['ExitBar'].values
             exit_dates = data_feeder_1min.df.iloc[exit_bars]['date']
             trades['ExitDate'] = exit_dates.values
-            print("nakhre")
-            st.write( data_feeder_1min.df )
+           
+            
             
             
             
@@ -871,3 +871,4 @@ if st.button("Run Model"):
         st.write("SSG signal:", ssg_pred_5min.iloc[-1]['SSG'])
         st.write("HPattern signal:", h_pred_5min.iloc[-1]['HPattern'])
         st.write("Trip5 signal:", trip5_pred_5min.iloc[-1]['Trip5'])
+        st.write( data_feeder_1min_new )
