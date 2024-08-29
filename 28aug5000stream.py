@@ -871,4 +871,6 @@ if st.button("Run Model"):
         st.write("SSG signal:", ssg_pred_5min.iloc[-1]['SSG'])
         st.write("HPattern signal:", h_pred_5min.iloc[-1]['HPattern'])
         st.write("Trip5 signal:", trip5_pred_5min.iloc[-1]['Trip5'])
-        st.write( data_feeder_1min_new )
+        st.write( data_feeder_1min_new.df )
+        st.write( data_feeder_2min_new.df )
+        st.write( data_feeder_5min_new.df )
