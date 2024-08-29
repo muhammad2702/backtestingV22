@@ -22,8 +22,8 @@ st.title(" Backtest (QQQ) Release V.22 " )
     
 cashval = st.number_input("Initial Capital", min_value=1000, value=10000, step=1000)
 thresholdval = st.number_input(" Select Threshold Value:", min_value=1, max_value=4, value=1, step=1)
-slval = float(st.number_input("Stop Loss above/below Current Price", min_value=1.0, value=4.0, step=0.1))
-tpval = float(st.number_input("Take Profit above/below Current Price", min_value=1.0, value=4.0, step=0.1))
+slval = float(st.number_input("Stop Loss above/below Current Price", min_value=0.1, value=4.0, step=0.1))
+tpval = float(st.number_input("Take Profit above/below Current Price", min_value=0.1, value=4.0, step=0.1))
 
     
 
