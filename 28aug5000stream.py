@@ -248,7 +248,7 @@ class MABStrategy(Indicators):
         return strategy_signals
 
 
-cclass SSGStrategy(Indicators):
+class SSGStrategy(Indicators):
     def __init__(self, df):
         super().__init__(df)
     
