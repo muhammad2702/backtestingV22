@@ -681,7 +681,8 @@ if st.button("Run Backtest"):
             st.write(combined_signals_2min)
             html_filename2 = 'backtest_plot2.html'
             bt2.plot(plot_volume=True, plot_pl=False, filename=html_filename2, open_browser=False)
-
+            st.write(data_feeder_1min.df)
+            st.write(data_feeder_2min.df)
 # Read the HTML file content
             with open(html_filename, 'r') as file:
                 html_content2 = file.read()
