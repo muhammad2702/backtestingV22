@@ -248,7 +248,7 @@ class MABStrategy(Indicators):
         return strategy_signals
 
 
-class SSGStrategy(Indicators):
+cclass SSGStrategy(Indicators):
     def __init__(self, df):
         super().__init__(df)
     
@@ -259,15 +259,15 @@ class SSGStrategy(Indicators):
 
         # Iterate over the DataFrame rows
         for i in range(2, len(self.df)):
-            # Check if the Fast D is in the >80 zone or coming from that zone and decreasing
-            if self.df['%FastD'][i] < 80 or (self.df['%FastD'][i] < 80 and self.df['%FastD'][i-2] > self.df['%FastD'][i-3] and self.df['%FastD'][i] < self.df['%FastD'][i-1]):
+            # Check if the Fast D is in the >80 zone or coming from that zone and decreasing # start here
+             if  self.df['%FastD'][i] < 80 or (self.df['%FastD'][i-1] < 80 and self.df['%FastD'][i-1] > self.df['%FastD'][i-2] and self.df['%FastD'][i] < self.df['%FastD'][i-1]):
                 # Check if the Double Slow K is at 100 and stays there while Fast D is < 80
-                if self.df['DoubleSlowK'][i] > 80 or self.df['DoubleSlowK'][i-1] > 80 or self.df['DoubleSlowK'][i-2] > 80 : #THIS CAUSES EMPTY SSG SIGNALS
+                if self.df['DoubleSlowK'][i] > 80 :
                     strategy_signals['SSG_Signal'][i] = -1  # Short signal
             # Check if the Fast D is in the <20 zone or coming from that zone and increasing
-            elif self.df['%FastD'][i] > 20 or self.df['%FastD'][i] < 20   and self.df['%FastD'][i-2] < self.df['%FastD'][i-3] and self.df['%FastD'][i] > self.df['%FastD'][i-1]:
+             elif self.df['%FastD'][i] > 20 :
                 # Check if the Double Slow K is at 0 and stays there while Fast D is > 20
-                if self.df['DoubleSlowK'][i] < 20 or self.df['DoubleSlowK'][i-1] < 20 or self.df['DoubleSlowK'][i-2] < 20 : #THIS CAUSES EMPTY SSG SIGNALS
+                if self.df['DoubleSlowK'][i] < 20   and self.df['%FastD'][i-1] < 20 and self.df['%FastD'][i-1] < self.df['%FastD'][i-2] and self.df['%FastD'][i] > self.df['%FastD'][i-1]:
                     strategy_signals['SSG_Signal'][i] = 1  # Long signal
 
         return strategy_signals
