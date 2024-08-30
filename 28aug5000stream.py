@@ -281,11 +281,10 @@ class SSGStrategy(Indicators):
     
         return strategy_signals
     
-    
+     
 class HPatternStrategy(Indicators):
     def __init__(self, df):
         super().__init__(df)
-
     def check_fast_d_conditionshort(self, i):
         """
         Checks if the Fast D is in the >80 zone or coming from that zone and decreasing.
@@ -293,7 +292,6 @@ class HPatternStrategy(Indicators):
         return (self.df['%FastD'][i] > 80 and
                 self.df['%FastD'][i-1] > 80  and self.df['%FastD'][i] < self.df['%FastD'][i-1]) or (self.df['DoubleSlowK'][i] > 80 and
                         self.df['DoubleSlowK'][i-1] > 80  and self.df['DoubleSlowK'][i] < self.df['DoubleSlowK'][i-1])
-
     def check_fast_d_conditionlong(self, i):
         """
         Checks if the Fast D is in the >80 zone or coming from that zone and decreasing.
@@ -301,38 +299,39 @@ class HPatternStrategy(Indicators):
         return (self.df['%FastD'][i] <20 and
                 self.df['%FastD'][i-1] <20 and self.df['%FastD'][i-2] < 20 and self.df['%FastD'][i] > self.df['%FastD'][i-1]) or (self.df['DoubleSlowK'][i] <20 and
                         self.df['DoubleSlowK'][i-1] <20 and self.df['DoubleSlowK'][i-2] < 20 and self.df['DoubleSlowK'][i] > self.df['DoubleSlowK'][i-1])
-
+   
     def h_pattern(self):
         # Create a new DataFrame to store the strategy signals
         strategy_signals = pd.DataFrame(index=self.df.index)
         strategy_signals['HPattern_Signal'] = 0  # 1 for long, -1 for short, 0 for no signal
 
         # Iterate over the DataFrame rows
-        for i in range(31, len(self.df)):  # Check for 30 minute window between legs
-            # Check for inverted H pattern (put - short)
-            if self.df['close'][i-30] < self.df['close'][i-60] and self.df['high'][i] > self.df['high'][i-30] and self.df['low'][i] < self.df['low'][i-30] and (self.df['close'][i] >= self.df['close'][i-30] or self.df['close'][i] >= self.df['close'][i-60]):
-                if self.check_fast_d_conditionshort(i):
-                    # Confirm 2nd pattern confirmation at the front leg
-                    if self.df['%FastD'][i-1] < self.df['%FastD'][i-2] and self.df['DoubleSlowK'][i-1] < self.df['DoubleSlowK'][i-2]:
+        for i in range(2, len(self.df)):
+            # Check if the price hits a high point (back leg)
+            if self.df['high'][i] > self.df['high'][i-1]:
+                # Check if the price drops for a while then goes back up close to the same level (front leg)
+                if self.df['low'][i] < self.df['low'][i-1]  and (self.df['close'][i] >= self.df['close'][i-1] or self.df['close'][i] >= self.df['close'][i-2]):
+                        # Check if the Fast D is in the >80 zone or coming from that zone and decreasing
+                    if self.check_fast_d_conditionshort(i):
                         strategy_signals['HPattern_Signal'][i] = -1  # Short signal
-            # Check for standard H pattern (call - long)
-            elif self.df['close'][i-30] > self.df['close'][i-60] and self.df['low'][i] < self.df['low'][i-30] and self.df['high'][i] > self.df['high'][i-30] and (self.df['close'][i] <= self.df['close'][i-30] or self.df['close'][i] >= self.df['close'][i-60]):
-                if self.check_fast_d_conditionlong(i):
-                    # Confirm 2nd pattern confirmation at the front leg
-                    if self.df['%FastD'][i-1] > self.df['%FastD'][i-2] and self.df['DoubleSlowK'][i-1] > self.df['DoubleSlowK'][i-2]:
-                        strategy_signals['HPattern_Signal'][i] = 1  # Long signal
-
+                # Check if the price hits a low point (back leg)
+                elif self.df['low'][i] < self.df['low'][i-1] :
+                    # Check if the price goes up for a while then goes back down close to the same level (front leg)
+                    if self.df['high'][i] > self.df['high'][i-1]  and (self.df['close'][i] <= self.df['close'][i-1] or self.df['close'][i] >= self.df['close'][i-2] ):
+                            # Check if the Fast D is in the <20 zone or coming from that zone and increasing
+                        if self.check_fast_d_conditionlong(i):
+                            strategy_signals['HPattern_Signal'][i] = 1  # Long signal
 
         return strategy_signals
-
+    
     def run_strategy(self):
         # Calculate the indicators
-
+      
+    
         # Apply the H Pattern strategy
         strategy_signals = self.h_pattern()
-
+    
         return strategy_signals
-  
 class NewStrategy(Indicators):
     def __init__(self, df):
         super().__init__(df)
